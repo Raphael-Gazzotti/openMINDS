@@ -111,6 +111,7 @@ def compare_json_schemas(schema1, schema2, parent_key:str = "", normalize: bool 
     """ Recursively compare two schema files (comparison of the attributes) """
     changes = []
     type_modified = None
+    type_notBackwardCompatible = None
     structured_changes = {"addedAttributes": [], "removedAttributes": [], "modifiedAttributes": []}
     global_changes = {"globalChanges": []}
 
@@ -145,6 +146,7 @@ def compare_json_schemas(schema1, schema2, parent_key:str = "", normalize: bool 
                     # Ignore '_type" renaming
                     if pattern1 != pattern2:
                         namespaces_changes.add(f"Namespace changed from {pattern1} to {pattern2}.")
+                        type_notBackwardCompatible = normalized_schema2["name"]
                 continue
 
             # Check if keys are the same in both schemas after normalization
@@ -165,6 +167,8 @@ def compare_json_schemas(schema1, schema2, parent_key:str = "", normalize: bool 
         if key not in normalized_schema2:
             changes.append(f"Field '{parent_key + key}' removed.")
             structured_changes["removedAttributes"].append(parent_key + key)
+            if "name" in normalized_schema2:
+                type_notBackwardCompatible = normalized_schema2["name"]
 
     # Find keys present in schema2 but not in schema1
     for key in sorted(normalized_schema2, key=lambda s: s.lower()):
@@ -192,9 +196,12 @@ def compare_json_schemas(schema1, schema2, parent_key:str = "", normalize: bool 
                 elif [normalize_uri(value1) for value1 in normalized_schema1[key]] != [normalize_uri(value2) for value2 in normalized_schema2[key]]:
                     changes.append(f"Field '{parent_key + key}' modified.")
                     structured_changes["modifiedAttributes"].append(parent_key + key)
+                    if ((key in ('_linkedTypes') and not set(normalized_schema1[key]).issubset(normalized_schema2[key]))
+                            or (key in ('required') and not set(normalized_schema1[key]).issubset(normalized_schema2[key]))):
+                        type_notBackwardCompatible = normalized_schema2["name"]
 
     if changes and "schemaType" not in structured_changes:
-        if "name" in normalized_schema1 and "name" in normalized_schema1:
+        if "name" in normalized_schema1 and "name" in normalized_schema2:
             if normalized_schema1["name"] == normalized_schema2["name"]:
                 structured_changes["schemaType"] = normalized_schema1["name"]
                 type_modified = structured_changes["schemaType"]
