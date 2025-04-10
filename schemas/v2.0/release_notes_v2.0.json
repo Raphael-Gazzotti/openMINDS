@@ -58,21 +58,27 @@
     {
       "file": "core/products/model.schema.omi.json",
       "modifiedAttributes": [
-        "properties.props:studyTarget._linkedTypes"
+        {
+          "property": "properties.props:studyTarget._linkedTypes"
+        }
       ],
       "schemaType": "Model"
     },
     {
       "file": "core/research/protocol.schema.omi.json",
       "modifiedAttributes": [
-        "properties.props:studyOption._linkedTypes"
+        {
+          "property": "properties.props:studyOption._linkedTypes"
+        }
       ],
       "schemaType": "Protocol"
     },
     {
       "file": "core/research/protocolExecution.schema.omi.json",
       "modifiedAttributes": [
-        "properties.props:studyTarget._linkedTypes"
+        {
+          "property": "properties.props:studyTarget._linkedTypes"
+        }
       ],
       "schemaType": "ProtocolExecution"
     }

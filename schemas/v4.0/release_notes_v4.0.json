@@ -19,7 +19,10 @@
     {
       "file": "core/data/measurement.schema.omi.json",
       "modifiedAttributes": [
-        "properties.props:measuredWith._linkedTypes"
+        {
+          "property": "properties.props:measuredWith._linkedTypes",
+          "modification": "value(s) added"
+        }
       ],
       "schemaType": "Measurement"
     },
@@ -34,44 +37,67 @@
     {
       "file": "core/products/setup.schema.omi.json",
       "modifiedAttributes": [
-        "properties.props:hasPart._linkedTypes"
+        {
+          "property": "properties.props:hasPart._linkedTypes",
+          "modification": "value(s) added"
+        }
       ],
       "schemaType": "Setup"
     },
     {
       "file": "ephys/activity/cellPatching.schema.omi.json",
       "modifiedAttributes": [
-        "properties.props:device._linkedTypes"
+        {
+          "property": "properties.props:device._linkedTypes",
+          "modification": "value(s) added"
+        }
       ],
       "schemaType": "CellPatching"
     },
     {
       "file": "ephys/activity/electrodePlacement.schema.omi.json",
       "modifiedAttributes": [
-        "properties.props:device._linkedTypes"
+        {
+          "property": "properties.props:device._linkedTypes",
+          "modification": "value(s) added"
+        }
       ],
       "schemaType": "ElectrodePlacement"
     },
     {
       "file": "ephys/entity/recording.schema.omi.json",
       "modifiedAttributes": [
-        "properties.props:recordedWith._linkedTypes"
+        {
+          "property": "properties.props:recordedWith._linkedTypes",
+          "modification": "value(s) added"
+        }
       ],
       "schemaType": "Recording"
     },
     {
       "file": "publications/livePaperResourceItem.schema.omi.json",
       "modifiedAttributes": [
-        "properties.props:hostedBy._instruction",
-        "properties.props:hostedBy._linkedTypes"
+        {
+          "property": "properties.props:hostedBy._instruction"
+        },
+        {
+          "property": "properties.props:hostedBy._linkedTypes",
+          "modification": "value(s) added"
+        }
       ],
       "schemaType": "LivePaperResourceItem"
     },
     {
       "file": "stimulation/stimulus/ephysStimulus.schema.omi.json",
       "modifiedAttributes": [
-        "properties.props:deliveredBy._linkedTypes",
-        "properties.props:generatedBy._linkedTypes"
+        {
+          "property": "properties.props:deliveredBy._linkedTypes",
+          "modification": "value(s) added"
+        },
+        {
+          "property": "properties.props:generatedBy._linkedTypes",
+          "modification": "value(s) added"
+        }
       ],
       "schemaType": "EphysStimulus"
     }
