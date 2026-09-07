@@ -6,6 +6,7 @@ from openMINDS_pipeline.resolver import resolve_extends, resolve_categories
 from openMINDS_pipeline.utils import clone_sources, find_schemas, evaluate_versions_to_be_built, clone_central, \
     qualify_property_names, copy_to_target_directory, update_relevant_versions_from_repo
 from openMINDS_pipeline.vocab import TypeExtractor, Types, PropertyExtractor, Property, enrich_with_types_and_properties
+from openMINDS_pipeline.dependency_matrix import build_relationships, plot_dependency_matrix
 from openMINDS_pipeline.schema_comparator import generate_changelogs_and_compatibility_resolution
 
 
@@ -43,7 +44,8 @@ for version, modules in relevant_versions.items():
     resolve_extends(all_schemas, directory_structure)
 
     # Step 5 - Resolve all categories to type lists in target directory. Also saves an overview of categories to type mapping by version into categories.json
-    resolve_categories(version, directory_structure, all_schemas)
+    # Return a dictionary that stores the dependency relations (true / soft dependencies) across openMINDS modules
+    dependency_relations = resolve_categories(version, directory_structure, all_schemas)
 
     # Step 6 - Qualify the properties of the schemas
     qualify_property_names(all_schemas)
@@ -59,6 +61,9 @@ for version, modules in relevant_versions.items():
 
     # Step 10 - Copy results to the target directory
     copy_to_target_directory(directory_structure, version)
+
+    dep, module = build_relationships(dependency_relations)
+    plot_dependency_matrix(dep, module, version)
 
 # Step 11 - Generation of changelogs and add the compatibility of the types (the version used before the one triggered is required)
 update_relevant_versions_from_repo(args["config"], relevant_versions)

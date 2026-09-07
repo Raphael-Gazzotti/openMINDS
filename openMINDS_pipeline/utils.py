@@ -12,7 +12,7 @@ from packaging.version import Version
 
 from openMINDS_pipeline.constants import SCHEMA_FILE_ENDING
 from openMINDS_pipeline.models import Trigger, OpenMINDSModule, DirectoryStructure, SchemaStructure
-from openMINDS_pipeline.resolver import TEMPLATE_PROPERTY_TYPE
+from openMINDS_pipeline.constants import TEMPLATE_PROPERTY_TYPE
 
 
 def clone_central(refetch:bool, branch:Optional[str]=None) -> None:
@@ -205,6 +205,10 @@ def get_files_in_directory(version_dir: str) -> List[str]:
     return sorted(files, key=lambda s: s.lower())
 
 
+def get_schema_group(reference: str):
+    """ Extract the schema group from an embedded or linked reference (e.g. core:Dataset -> core). """
+    return reference.split("/")[-2] if '/' in reference else reference.split(":")[0]
+
 def detect_moved_files(added_files: List[str], removed_files: List[str]) -> Tuple[List[str], List[str]]:
     """ Detect moved files among two lists. """
     moved_files = [file_path for file_path in added_files if os.path.basename(file_path) in [os.path.basename(removed_file) for removed_file in removed_files]]
@@ -239,3 +243,10 @@ def save_file(file_path: str, content, is_json: bool = False, sort_keys: bool = 
             f.write('\n')
         else:
             f.write(content)
+
+def sets_to_lists(obj):
+    if isinstance(obj, dict):
+        return {key: sets_to_lists(value) for key, value in obj.items()}
+    if isinstance(obj, set):
+        return list(obj)
+    return obj
